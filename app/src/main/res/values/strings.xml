@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">PopularMovies</string>
+    <string name="action_settings">Settings</string>
+
+    <string-array name="filter_options">
+        <item> /movie/popular </item>
+        <item> /movie/top_rated </item>
+    </string-array>
+    <string-array name="filter_options_show">
+        <item> Popular </item>
+        <item> Top rated </item>
+    </string-array>
+</resources>
