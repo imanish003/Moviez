@@ -137,7 +137,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                                 "UTF-8");*/
                 String urlParameters = "api_key="
                         + URLEncoder
-                        .encode("PUT_API_KEY_HERE",
+                        .encode(BuildConfig.MOVIE_API_KEY,
                                 "UTF-8");
                 writer.write(urlParameters);
                 writer.flush();
