@@ -1,20 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<fragment xmlns:android="http://schemas.android.com/apk/res/android"
+    android:name="hnmn3.mechanic.optimist.popularmovies.GridViewFragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary">
 
-
-    <GridView
-        android:id="@+id/gridView"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:gravity="center"
-        android:drawSelectorOnTop="true"
-        android:horizontalSpacing="0dp"
-        android:verticalSpacing="0dp"
-        android:focusable="true"
-        android:background="@color/colorPrimary"
-        android:clickable="true"
-        android:numColumns="auto_fit" />
-
-</LinearLayout>
+</fragment>
