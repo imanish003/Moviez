@@ -5,113 +5,156 @@
     android:layout_height="match_parent"
     android:background="#7e6ab4">
 
-    <RelativeLayout
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="hnmn3.mechanic.optimist.popularmovies.MovieDetails_Activity">
+        android:orientation="vertical">
 
-        <ImageView
-            android:id="@+id/ivPoster"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:src="@drawable/mv" />
-
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_alignBottom="@+id/ivPoster"
-            android:layout_alignTop="@+id/ivPoster"
-            android:layout_toEndOf="@+id/ivPoster"
-            android:layout_toRightOf="@+id/ivPoster"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            tools:context="hnmn3.mechanic.optimist.popularmovies.MovieDetails_Activity">
 
-            <TextView
+            <ImageView
+                android:id="@+id/ivPoster"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignLeft="@+id/tvReleaseDate"
-                android:layout_alignStart="@+id/tvReleaseDate"
-                android:layout_below="@+id/tvReleaseDate"
-                android:layout_gravity="center_horizontal"
-                android:paddingBottom="5dp"
-                android:text="Release Date"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="#cbd6f0"
-                android:textSize="30dp"
-                android:textStyle="bold" />
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:src="@drawable/mv" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignBottom="@+id/ivPoster"
+                android:layout_alignTop="@+id/ivPoster"
+                android:layout_gravity="bottom"
+                android:layout_toEndOf="@+id/ivPoster"
+                android:layout_toRightOf="@+id/ivPoster"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/tvReleaseDate"
+                    android:layout_alignStart="@+id/tvReleaseDate"
+                    android:layout_below="@+id/tvReleaseDate"
+                    android:layout_gravity="center_horizontal"
+                    android:paddingBottom="5dp"
+                    android:text="Release Date"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textColor="#cbd6f0"
+                    android:textSize="30dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvReleaseDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/tvRating"
+                    android:layout_alignStart="@+id/tvRating"
+                    android:layout_below="@+id/tvRating"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="30dp"
+                    android:text="2016-03-23"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="#d8c8df"
+                    android:textSize="25dp"
+                    android:textStyle="bold|italic" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/tvRating"
+                    android:layout_alignStart="@+id/tvRating"
+                    android:layout_below="@+id/tvRating"
+                    android:layout_gravity="center_horizontal"
+                    android:paddingBottom="5dp"
+                    android:text="Rating"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textColor="#cbd6f0"
+                    android:textSize="30dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvRating"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/ivPoster"
+                    android:layout_alignStart="@+id/ivPoster"
+                    android:layout_below="@+id/ivPoster"
+                    android:layout_gravity="center_horizontal"
+                    android:text="5.77/10"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="#d8c8df"
+                    android:textSize="25dp"
+                    android:textStyle="bold|italic" />
+            </LinearLayout>
 
             <TextView
-                android:id="@+id/tvReleaseDate"
+                android:id="@+id/tvOverview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignLeft="@+id/tvRating"
-                android:layout_alignStart="@+id/tvRating"
-                android:layout_below="@+id/tvRating"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="30dp"
-                android:text="2016-03-23"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/tvOvervi"
+                android:layout_margin="5dp"
+                android:text="Fearing the actions of a god-like Super Hero left unchecked, Gotham City’s own formidable, forceful vigilante takes on Metropolis’s most revered, modern-day savior, while the world wrestles with what sort of hero it really needs. And with Batman and Superman at war with one another, a new threat quickly arises, putting mankind in greater danger than it’s ever known before."
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="#d8c8df"
-                android:textSize="25dp"
-                android:textStyle="bold|italic" />
+                android:textSize="25dp" />
 
             <TextView
+                android:id="@+id/tvOvervi"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignLeft="@+id/tvRating"
-                android:layout_alignStart="@+id/tvRating"
-                android:layout_below="@+id/tvRating"
-                android:layout_gravity="center_horizontal"
-                android:paddingBottom="5dp"
-                android:text="Rating"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="#cbd6f0"
-                android:textSize="30dp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/tvRating"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignLeft="@+id/ivPoster"
-                android:layout_alignStart="@+id/ivPoster"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
                 android:layout_below="@+id/ivPoster"
                 android:layout_gravity="center_horizontal"
-                android:text="5.77/10"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="#d8c8df"
-                android:textSize="25dp"
-                android:textStyle="bold|italic" />
-        </LinearLayout>
+                android:layout_margin="5dp"
+                android:text="Overview : "
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="#cbd6f0"
+                android:textSize="30dp"
+                android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/tvOverview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/tvOvervi"
-            android:layout_margin="5dp"
-            android:text="Fearing the actions of a god-like Super Hero left unchecked, Gotham City’s own formidable, forceful vigilante takes on Metropolis’s most revered, modern-day savior, while the world wrestles with what sort of hero it really needs. And with Batman and Superman at war with one another, a new threat quickly arises, putting mankind in greater danger than it’s ever known before."
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="#d8c8df"
-            android:textSize="25dp" />
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/ivPoster"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="5dp"
+                android:text="Overview : "
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="#cbd6f0"
+                android:textSize="30dp"
+                android:textStyle="bold" />
 
+        </RelativeLayout>
         <TextView
-            android:id="@+id/tvOvervi"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_below="@+id/ivPoster"
-            android:layout_gravity="center_horizontal"
+            android:layout_gravity="left|center_horizontal"
             android:layout_margin="5dp"
-            android:text="Overview : "
+            android:text="Reviews : "
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="#cbd6f0"
             android:textSize="30dp"
             android:textStyle="bold" />
-    </RelativeLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="vertical" />
+    </LinearLayout>
 </ScrollView>
