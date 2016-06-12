@@ -1,5 +1,8 @@
 package hnmn3.mechanic.optimist.popularmovies;
 
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -12,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -43,8 +47,10 @@ public class MovieDetails_Fragment extends Fragment {
 
     TextView tvReleaseDate, tvRating, tvOverview,noReviewAvailable;
     ImageView imageView;
+    LinearLayout trailerLayout;
     ProgressBar pBar;
     private List<Review> reviewList = new ArrayList<>();
+    private List<Trailer> trailerList = new ArrayList<>();
     private RecyclerView recyclerView;
     private ReviewAdapter mAdapter;
 
@@ -60,6 +66,7 @@ public class MovieDetails_Fragment extends Fragment {
         tvOverview = (TextView) rootView.findViewById(R.id.tvOverview);
         imageView = (ImageView) rootView.findViewById(R.id.ivPoster);
         pBar = (ProgressBar) rootView.findViewById(R.id.progressBarReview);
+        trailerLayout = (LinearLayout) rootView.findViewById(R.id.linearLayoutYoutube);
         tvReleaseDate.setTypeface(EasyFonts.droidSerifBold(getContext()));
         tvRating.setTypeface(EasyFonts.droidSerifBold(getContext()));
         tvOverview.setTypeface(EasyFonts.droidSerifBold(getContext()));
@@ -178,10 +185,62 @@ public class MovieDetails_Fragment extends Fragment {
                 noReviewAvailable.setVisibility(View.VISIBLE);
             }
             mAdapter.notifyDataSetChanged();
+            addTailersTolayout();
             //GridAdapter.setGridData(GridData);
         }
 
     }
+
+    private void addTailersTolayout() {
+        trailerLayout.setPadding(5, 10, 5, 0);
+        if(trailerList.size()>0){
+
+            for(int i=0;i<trailerList.size();i++){
+                final String source = trailerList.get(i).getSource() ;
+                String url ="http://img.youtube.com/vi/" + source + "/mqdefault.jpg";
+                ImageView myImage = new ImageView(getContext());
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.WRAP_CONTENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT
+                );
+                params.leftMargin = 3;
+                params.rightMargin = 3;
+                params.topMargin = 6;
+                params.bottomMargin = 3;
+                myImage.setLayoutParams(params);
+                Picasso.with(getContext())
+                        .load(url)
+                        .into(myImage);
+                trailerLayout.addView(myImage);
+                myImage.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        youtubeIntent(source);
+                    }
+                });
+            }
+        }else{
+            TextView errorMsg = new TextView(getContext());
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+            );
+            errorMsg.setLayoutParams(params);
+            errorMsg.setText("Sorry , No trailers are available for this movie");
+        }
+    }
+
+    private void youtubeIntent(String source) {
+        try {
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:" + source));
+            startActivity(intent);
+        } catch (ActivityNotFoundException ex) {
+            Intent intent = new Intent(Intent.ACTION_VIEW,
+                    Uri.parse("http://www.youtube.com/watch?v=" + source));
+            startActivity(intent);
+        }
+    }
+
 
     private void fatchReviewNTrailerDataFromJSON(String jsonString) {
         try {
@@ -210,8 +269,8 @@ public class MovieDetails_Fragment extends Fragment {
                 String size = jsonObjectTrailer.getString("size");
                 String source = jsonObjectTrailer.getString("source");
                 String type = jsonObjectTrailer.getString("type");
-
                 trailer = new Trailer(name,size,source,type);
+                trailerList.add(trailer);
             }
 
         } catch (JSONException e) {
@@ -220,14 +279,4 @@ public class MovieDetails_Fragment extends Fragment {
 
     }
 
-    private void prepareMovieData() {
-
-        Review review = new Review("Andres Gomez", "One of the best movies Disney has created in the last years. Smart plot with a great background topic talking about the differences, stereotypes, prejudices and joining the tendency of giving women more important roles.\\r\\n\\r\\nIt has still several gaps to fill and enhance on the latest point but it is, IMHO, a milestone in the right direction.\\r\\n\\r\\nThe characters work pretty well and it is funny when needed and not too full of cheesy songs.");
-        reviewList.add(review);
-
-        review = new Review("Reno", "Try everything (but differently). So Disney has done it again.\\r\\n\\r\\nThis beautiful animation came to exist because of coming together of the directors of 'Tangled' and 'Wreck-it-Ralp'. It is Disney who had once again done it, since their rival Pixer is going down in a rapid speed. As a Disney fan since my childhood, I'm very happy for their success in live-shot films and animations, especially for this one.\\r\\n\\r\\nOkay, since the revolution of 3D animation over 20 years ago after overthrowing the 2D animation, most of the big productions like Disney, Pixer and Dreamworks with few others never failed to deliver. Believe me, I was not interested in this film when I first saw the teaser and trailer. But they have done great promotions and so the film did awesomely at screens worldwide. I was totally blown away after seeing it, Disney's another unique universal charactered story. From the little children to the grown ups, everybody definitely going to enjoy it.\\r\\n\\r\\nAll kinds of animals coming together happens only in cinemas, and that too mostly in animations. But todays kids are very sharp who ask lots of questions, so they had a fine explanation for the doubts regarding putting animals in a same society. It was like the United States, where everyone came from different continents and represents different race. And so in this film every animal came from different land to live together peacefully in a city called Zootopia.\\r\\n\\r\\nSo the story begins when Judy the rabbit follows her dream to become a police officer in Zootopia. There she meets Nick the fox, who are actually arch-rival species in the wild, but it was thousands of years ago before adapting the civilisation. So trust is what not promised between them, but they're forced to work together after a small missing person case becomes their prime agenda. Solving the mystery is what brings the end to this wonderful tale.\\r\\n\\r\\nThese days animations are not just concentrated on comedies, trying to get us emotionally as well. Maybe that's how they're grabbing the adult audience, especially the families. Shakira's cameo was the highlight, and her song 'Try Everything' helped the get attention from all the corners.\\r\\n\\r\\nThe Oscars was concluded just a couple of months ago, but it already feels like the fever is gripping again for the next edition and looks like this film is leading the way for the animation category. I know it's too early, but I hope it wins it. And finally a request for the Disney, bring it on a sequel as soon as possible.");
-        reviewList.add(review);
-
-        mAdapter.notifyDataSetChanged();
-    }
 }
