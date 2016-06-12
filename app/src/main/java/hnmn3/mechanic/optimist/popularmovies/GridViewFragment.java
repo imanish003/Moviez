@@ -88,7 +88,9 @@ public class GridViewFragment extends Fragment implements AdapterView.OnItemClic
                 String release_date = jsonObject.getString("release_date");
                 String original_title = jsonObject.getString("original_title");
                 String vote_average = jsonObject.getString("vote_average");
-                GridItem item = new GridItem(url,overview,release_date,original_title,vote_average);
+                String id = jsonObject.getString("id");
+                System.out.print("id="+id);
+                GridItem item = new GridItem(url,overview,release_date,original_title,vote_average,id);
                 GridData.add(item);
             }
         } catch (JSONException e) {
@@ -108,10 +110,11 @@ public class GridViewFragment extends Fragment implements AdapterView.OnItemClic
             i.putExtra("getrelease_date", GridData.get(position).getrelease_date());
             i.putExtra("getURL", GridData.get(position).getURL());
             i.putExtra("getvote_average", GridData.get(position).getvote_average());
+            i.putExtra("id",GridData.get(position).getId());
             startActivity(i);
         }else{
             ((MainActivity)getActivity()).replaceFragment(GridData.get(position).getoriginal_title(),GridData.get(position).getoverview(),GridData.get(position).getrelease_date()
-            ,GridData.get(position).getURL(),GridData.get(position).getvote_average());
+            ,GridData.get(position).getURL(),GridData.get(position).getvote_average(),GridData.get(position).getId());
         }
 
 

@@ -26,13 +26,14 @@ public class MainActivity extends AppCompatActivity  {
         return mTabletMode;
     }
 
-    public void replaceFragment(String getoriginal_title, String getoverview, String getrelease_date, String url, String getvote_average) {
+    public void replaceFragment(String getoriginal_title, String getoverview, String getrelease_date, String url, String getvote_average,String id) {
         Bundle args = new Bundle();
         args.putString("getoriginal_title", getoriginal_title);
         args.putString("getrelease_date", getrelease_date);
         args.putString("getvote_average", getvote_average);
         args.putString("getoverview", getoverview);
         args.putString("getURL", url);
+        args.putString("id",id);
         //getSupportActionBar().setTitle(getoriginal_title);
 
         MovieDetails_Fragment detailfragment = new MovieDetails_Fragment();

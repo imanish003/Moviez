@@ -3,6 +3,7 @@ package hnmn3.mechanic.optimist.popularmovies;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.Toast;
 
 public class MovieDetails_Activity extends AppCompatActivity {
 
@@ -21,6 +22,8 @@ public class MovieDetails_Activity extends AppCompatActivity {
             args.putString("getvote_average", i.getStringExtra("getvote_average"));
             args.putString("getoverview", i.getStringExtra("getoverview"));
             args.putString("getURL", i.getStringExtra("getURL"));
+            args.putString("id", i.getStringExtra("id"));
+            Toast.makeText(MovieDetails_Activity.this, "activity id="+i.getStringExtra("id"), Toast.LENGTH_SHORT).show();
             //getSupportActionBar().setTitle(getoriginal_title);
 
             MovieDetails_Fragment detailfragment = new MovieDetails_Fragment();

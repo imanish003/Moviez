@@ -4,7 +4,7 @@ package adapter;
  * Created by Menaria on 4/9/2016.
  */
 public class GridItem {
-    private String URL,overview,release_date,original_title,vote_average;
+    private String URL,overview,release_date,original_title,vote_average,id;
 
 
     public GridItem() {
@@ -15,12 +15,13 @@ public class GridItem {
         this.URL = url;
     }
 
-    public GridItem(String url,String overview,String release_date,String original_title,String vote_average) {
+    public GridItem(String url,String overview,String release_date,String original_title,String vote_average,String id) {
         this.URL = url;
         this.overview = overview;
         this.release_date = release_date;
         this.original_title = original_title;
         this.vote_average = vote_average;
+        this.id=id;
     }
 
     public String getURL() {
@@ -38,5 +39,7 @@ public class GridItem {
     public String getvote_average() {
         return vote_average;
     }
-
+    public String getId() {
+        return id;
+    }
 }

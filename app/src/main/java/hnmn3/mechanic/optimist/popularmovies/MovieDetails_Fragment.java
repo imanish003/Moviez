@@ -12,23 +12,27 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 import com.vstechlab.easyfonts.EasyFonts;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import Trailer.Trailer;
 import review.Review;
 import review.ReviewAdapter;
 
@@ -37,11 +41,13 @@ import review.ReviewAdapter;
  */
 public class MovieDetails_Fragment extends Fragment {
 
-    TextView tvReleaseDate, tvRating, tvOverview;
+    TextView tvReleaseDate, tvRating, tvOverview,noReviewAvailable;
     ImageView imageView;
+    ProgressBar pBar;
     private List<Review> reviewList = new ArrayList<>();
     private RecyclerView recyclerView;
     private ReviewAdapter mAdapter;
+
 
     @Nullable
     @Override
@@ -50,18 +56,24 @@ public class MovieDetails_Fragment extends Fragment {
 
         tvReleaseDate = (TextView) rootView.findViewById(R.id.tvReleaseDate);
         tvRating = (TextView) rootView.findViewById(R.id.tvRating);
+        noReviewAvailable = (TextView) rootView.findViewById(R.id.tvNoReviewAvailbale);
         tvOverview = (TextView) rootView.findViewById(R.id.tvOverview);
         imageView = (ImageView) rootView.findViewById(R.id.ivPoster);
+        pBar = (ProgressBar) rootView.findViewById(R.id.progressBarReview);
         tvReleaseDate.setTypeface(EasyFonts.droidSerifBold(getContext()));
         tvRating.setTypeface(EasyFonts.droidSerifBold(getContext()));
         tvOverview.setTypeface(EasyFonts.droidSerifBold(getContext()));
 
+
+        String id = "null";
         if (getArguments() != null) {
             Bundle bundle = getArguments();
             ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(bundle.getString("getoriginal_title"));
             tvReleaseDate.setText(bundle.getString("getrelease_date"));
             tvRating.setText(bundle.getString("getvote_average") + "/10");
             tvOverview.setText(bundle.getString("getoverview"));
+            id=bundle.getString("id");
+            Toast.makeText(getContext(), "id="+id, Toast.LENGTH_SHORT).show();
 
             Picasso
                     .with(getContext())
@@ -77,7 +89,7 @@ public class MovieDetails_Fragment extends Fragment {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(mAdapter);
 
-        new GetReviewAndTrailers().execute("/movie/popular");
+        new GetReviewAndTrailers().execute(id);
 
         /*
 
@@ -86,7 +98,7 @@ public class MovieDetails_Fragment extends Fragment {
         String getoriginal_title = i.getStringExtra("getoriginal_title");
         getSupportActionBar().setTitle(getoriginal_title);
         */
-        prepareMovieData();
+        //prepareMovieData();
         return rootView;
     }
 
@@ -97,7 +109,7 @@ public class MovieDetails_Fragment extends Fragment {
 
         @Override
         protected String doInBackground(String... params) {
-            String url_ = "http://api.themoviedb.org/3/movie/269149/reviews?api_key="+BuildConfig.MOVIE_API_KEY;
+            String url_ = "http://api.themoviedb.org/3/movie/"+params[0]+"?api_key="+BuildConfig.MOVIE_API_KEY+"&append_to_response=trailers,reviews";
             try {
                 URL url = new URL(url_);
 
@@ -109,19 +121,19 @@ public class MovieDetails_Fragment extends Fragment {
                 conn.setConnectTimeout(15000);
                 conn.setRequestMethod("GET");
                 conn.setDoInput(true);
-                conn.setDoOutput(true);
+                conn.connect();
 
-                OutputStream os = conn.getOutputStream();
+                /*OutputStream os = conn.getOutputStream();
                 BufferedWriter writer = new BufferedWriter(
                         new OutputStreamWriter(os, "UTF-8"));
-                /*String urlParameters = "api_key="
+                *//*String urlParameters = "api_key="
                         + URLEncoder
                         .encode(BuildConfig.MOVIE_API_KEY,
                                 "UTF-8");
-                writer.write(urlParameters);*/
+                writer.write(urlParameters);*//*
                 writer.flush();
                 writer.close();
-                os.close();
+                os.close();*/
 
                 int responseCode = conn.getResponseCode();
 
@@ -137,6 +149,7 @@ public class MovieDetails_Fragment extends Fragment {
 
                     String jsonString = stringBuilder.toString();
                     System.out.println(jsonString);
+                    fatchReviewNTrailerDataFromJSON(jsonString);
 
                     return "Movies Data Loaded Sucessfully";
 
@@ -160,7 +173,49 @@ public class MovieDetails_Fragment extends Fragment {
 
         @Override
         protected void onPostExecute(String result) {
+            pBar.setVisibility(View.GONE);
+            if(reviewList.size()==0){
+                noReviewAvailable.setVisibility(View.VISIBLE);
+            }
+            mAdapter.notifyDataSetChanged();
             //GridAdapter.setGridData(GridData);
+        }
+
+    }
+
+    private void fatchReviewNTrailerDataFromJSON(String jsonString) {
+        try {
+            JSONObject jsonObject = new JSONObject(jsonString);
+            JSONObject jsonObjectreviews =  jsonObject.getJSONObject("reviews");
+            JSONArray jsonArray = jsonObjectreviews.getJSONArray("results");
+            Review review ;
+            Trailer trailer ;
+            reviewList.clear();
+
+            for(int i=0;i<jsonArray.length();i++){
+                review = new Review();
+                jsonObjectreviews = jsonArray.getJSONObject(i);
+                review.setAuthor(jsonObjectreviews.getString("author"));
+                review.setReview(jsonObjectreviews.getString("content"));
+                reviewList.add(review);
+            }
+
+
+            JSONObject jsonObjectTrailer = jsonObject.getJSONObject("trailers");
+            jsonArray=jsonObjectTrailer.getJSONArray("youtube");
+
+            for(int i=0;i<jsonArray.length();i++){
+                jsonObjectTrailer = jsonArray.getJSONObject(i);
+                String name = jsonObjectTrailer.getString("name");
+                String size = jsonObjectTrailer.getString("size");
+                String source = jsonObjectTrailer.getString("source");
+                String type = jsonObjectTrailer.getString("type");
+
+                trailer = new Trailer(name,size,source,type);
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
 
     }

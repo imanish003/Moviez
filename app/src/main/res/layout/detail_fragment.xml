@@ -23,7 +23,8 @@
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
-                android:src="@drawable/mv" />
+                android:src="@drawable/mv"
+                android:layout_marginBottom="10dp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -93,50 +94,35 @@
                     android:textStyle="bold|italic" />
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/tvOverview"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_below="@+id/tvOvervi"
-                android:layout_margin="5dp"
-                android:text="Fearing the actions of a god-like Super Hero left unchecked, Gotham City’s own formidable, forceful vigilante takes on Metropolis’s most revered, modern-day savior, while the world wrestles with what sort of hero it really needs. And with Batman and Superman at war with one another, a new threat quickly arises, putting mankind in greater danger than it’s ever known before."
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="#d8c8df"
-                android:textSize="25dp" />
-
-            <TextView
-                android:id="@+id/tvOvervi"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_below="@+id/ivPoster"
-                android:layout_gravity="center_horizontal"
-                android:layout_margin="5dp"
-                android:text="Overview : "
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="#cbd6f0"
-                android:textSize="30dp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/textView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_below="@+id/ivPoster"
-                android:layout_gravity="center_horizontal"
-                android:layout_margin="5dp"
-                android:text="Overview : "
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="#cbd6f0"
-                android:textSize="30dp"
-                android:textStyle="bold" />
-
         </RelativeLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/ivPoster"
+            android:layout_margin="2dp"
+            android:text="Overview : "
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="#cbd6f0"
+            android:textSize="30dp"
+            android:textStyle="bold"
+            android:id="@+id/textView2" />
+
+        <TextView
+            android:id="@+id/tvOverview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/tvOvervi"
+            android:text="Fearing the actions of a god-like Super Hero left unchecked, Gotham City’s own formidable, forceful vigilante takes on Metropolis’s most revered, modern-day savior, while the world wrestles with what sort of hero it really needs. And with Batman and Superman at war with one another, a new threat quickly arises, putting mankind in greater danger than it’s ever known before."
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#d8c8df"
+            android:textSize="25dp"
+            android:layout_marginLeft="15dp" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -144,17 +130,41 @@
             android:layout_alignParentStart="true"
             android:layout_below="@+id/ivPoster"
             android:layout_gravity="left|center_horizontal"
-            android:layout_margin="5dp"
+            android:layout_margin="2dp"
             android:text="Reviews : "
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="#cbd6f0"
             android:textSize="30dp"
             android:textStyle="bold" />
 
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/progressBarReview"
+            android:layout_marginLeft="15dp"
+            android:indeterminate="false" />
+
+        <TextView
+            android:id="@+id/tvNoReviewAvailbale"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sorry , No reviews available for this movie."
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#d8c8df"
+            android:textSize="25dp"
+            android:layout_below="@+id/author"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="15dp"
+            android:visibility="gone" />
+
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:scrollbars="vertical" />
+            android:clickable="false"
+            android:scrollbars="vertical"
+            android:layout_marginLeft="15dp" />
     </LinearLayout>
 </ScrollView>
