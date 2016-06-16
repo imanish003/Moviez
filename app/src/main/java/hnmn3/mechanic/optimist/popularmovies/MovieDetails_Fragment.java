@@ -84,81 +84,79 @@ public class MovieDetails_Fragment extends Fragment implements View.OnClickListe
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.detail_fragment, container, false);
+        if(savedInstanceState==null){
+            tvReleaseDate = (TextView) rootView.findViewById(R.id.tvReleaseDate);
+            tvRating = (TextView) rootView.findViewById(R.id.tvRating);
+            noReviewAvailable = (TextView) rootView.findViewById(R.id.tvNoReviewAvailbale);
+            tvOverview = (TextView) rootView.findViewById(R.id.tvOverview);
+            imageView = (ImageView) rootView.findViewById(R.id.ivPoster);
+            pBar = (ProgressBar) rootView.findViewById(R.id.progressBarReview);
+            trailerLayout = (LinearLayout) rootView.findViewById(R.id.linearLayoutYoutube);
+            setRetainInstance (true);
 
-        tvReleaseDate = (TextView) rootView.findViewById(R.id.tvReleaseDate);
-        tvRating = (TextView) rootView.findViewById(R.id.tvRating);
-        noReviewAvailable = (TextView) rootView.findViewById(R.id.tvNoReviewAvailbale);
-        tvOverview = (TextView) rootView.findViewById(R.id.tvOverview);
-        imageView = (ImageView) rootView.findViewById(R.id.ivPoster);
-        pBar = (ProgressBar) rootView.findViewById(R.id.progressBarReview);
-        trailerLayout = (LinearLayout) rootView.findViewById(R.id.linearLayoutYoutube);
-        setRetainInstance (true);
+            setTypeFaceTv();
 
-        setTypeFaceTv();
+            //Is favorite
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+            String url_end = preferences.getString("filter", "/movie/popular");
+            if (url_end.equals("favorite")) {
+                isFavorite = true;
+            }
 
-        //Is favorite
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-        String url_end = preferences.getString("filter", "/movie/popular");
-        if (url_end.equals("favorite")) {
-            isFavorite = true;
-        }
-
-        if (getArguments() != null) {
-            Bundle bundle = getArguments();
-            id = bundle.getString("id");
-            vote_average = bundle.getString("getvote_average");
-            release_date = bundle.getString("getrelease_date");
-            //poster_path,
-            overview = bundle.getString("getoverview");
-            original_title = bundle.getString("getoriginal_title");
+            if (getArguments() != null) {
+                Bundle bundle = getArguments();
+                id = bundle.getString("id");
+                vote_average = bundle.getString("getvote_average");
+                release_date = bundle.getString("getrelease_date");
+                //poster_path,
+                overview = bundle.getString("getoverview");
+                original_title = bundle.getString("getoriginal_title");
 
 
-            ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(original_title);
-            tvReleaseDate.setText(release_date);
-            tvRating.setText(vote_average + "/10");
-            tvOverview.setText(overview);
-            //Toast.makeText(getContext(), "Saved id=" + id, Toast.LENGTH_SHORT).show();
+                ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(original_title);
+                tvReleaseDate.setText(release_date);
+                tvRating.setText(vote_average + "/10");
+                tvOverview.setText(overview);
+                //Toast.makeText(getContext(), "Saved id=" + id, Toast.LENGTH_SHORT).show();
 
-            if (isFavorite) {
-                load(bundle.getString("getURL"), id);
+                if (isFavorite) {
+                    load(bundle.getString("getURL"), id);
 
+                } else {
+                    Picasso
+                            .with(getContext())
+                            .load(bundle.getString("getURL"))
+                            .into(imageView);
+                }
+            }
+
+
+
+            recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
+
+            mAdapter = new ReviewAdapter(reviewList);
+            RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
+            recyclerView.setLayoutManager(mLayoutManager);
+            recyclerView.setItemAnimator(new DefaultItemAnimator());
+            recyclerView.setAdapter(mAdapter);
+
+            floatingActionButton = (FloatingActionButton) rootView.findViewById(R.id.viewFloatingButton);
+            floatingActionButton.setOnClickListener(this);
+
+            Uri uri = Uri.parse(MovieContract.BASE_CONTENT_URI + "/" + MovieContract.FavoriteTableContents.TABLE_NAME + "/check");
+            String[] selectionArgs = {id};
+            Cursor cursor = getContext().getContentResolver().query(uri, null, null, selectionArgs, null);
+
+
+            if (isFavorite || (cursor!=null && cursor.moveToFirst())) {
+                floatingActionButton.setBackgroundTintList(ColorStateList.valueOf(
+                        getResources().getColor(R.color.favorite)
+                ));
+                fatchReviewNTrailerDataFromContentProvider();
             } else {
-                Picasso
-                        .with(getContext())
-                        .load(bundle.getString("getURL"))
-                        .into(imageView);
+                new GetReviewAndTrailers().execute(id);
             }
         }
-
-
-
-        recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
-
-        mAdapter = new ReviewAdapter(reviewList);
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
-        recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(mAdapter);
-
-        floatingActionButton = (FloatingActionButton) rootView.findViewById(R.id.viewFloatingButton);
-        floatingActionButton.setOnClickListener(this);
-
-        Uri uri = Uri.parse(MovieContract.BASE_CONTENT_URI + "/" + MovieContract.FavoriteTableContents.TABLE_NAME + "/check");
-        String[] selectionArgs = {id};
-        Cursor cursor = getContext().getContentResolver().query(uri, null, null, selectionArgs, null);
-
-
-        if (isFavorite || (cursor!=null && cursor.moveToFirst())) {
-            floatingActionButton.setBackgroundTintList(ColorStateList.valueOf(
-                    getResources().getColor(R.color.favorite)
-            ));
-            fatchReviewNTrailerDataFromContentProvider();
-        } else {
-            new GetReviewAndTrailers().execute(id);
-        }
-
-
-
         return rootView;
     }
 
