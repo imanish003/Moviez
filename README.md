@@ -1,4 +1,4 @@
-# Popular Movies
+# Moviez
 
 #### Udacity Android Nanodegree Project - Moviez
 
