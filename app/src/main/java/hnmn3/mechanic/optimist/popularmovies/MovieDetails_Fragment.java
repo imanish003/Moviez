@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.ColorStateList;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -120,6 +121,7 @@ public class MovieDetails_Fragment extends Fragment implements View.OnClickListe
 
             if (isFavorite) {
                 load(bundle.getString("getURL"), id);
+
             } else {
                 Picasso
                         .with(getContext())
@@ -127,6 +129,8 @@ public class MovieDetails_Fragment extends Fragment implements View.OnClickListe
                         .into(imageView);
             }
         }
+
+
 
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
 
@@ -136,14 +140,24 @@ public class MovieDetails_Fragment extends Fragment implements View.OnClickListe
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(mAdapter);
 
-        if (isFavorite) {
+        floatingActionButton = (FloatingActionButton) rootView.findViewById(R.id.viewFloatingButton);
+        floatingActionButton.setOnClickListener(this);
+
+        Uri uri = Uri.parse(MovieContract.BASE_CONTENT_URI + "/" + MovieContract.FavoriteTableContents.TABLE_NAME + "/check");
+        String[] selectionArgs = {id};
+        Cursor cursor = getContext().getContentResolver().query(uri, null, null, selectionArgs, null);
+
+
+        if (isFavorite || (cursor!=null && cursor.moveToFirst())) {
+            floatingActionButton.setBackgroundTintList(ColorStateList.valueOf(
+                    getResources().getColor(R.color.favorite)
+            ));
             fatchReviewNTrailerDataFromContentProvider();
         } else {
             new GetReviewAndTrailers().execute(id);
         }
 
-        floatingActionButton = (FloatingActionButton) rootView.findViewById(R.id.viewFloatingButton);
-        floatingActionButton.setOnClickListener(this);
+
 
         return rootView;
     }
@@ -211,7 +225,11 @@ public class MovieDetails_Fragment extends Fragment implements View.OnClickListe
                     getContext().getContentResolver().delete(uri,
                             MovieContract.ReviewTableContent.COLUMN_movie_id + " = ? ", args);
                     Snackbar.make(v, "Removed from favorite movie", Snackbar.LENGTH_LONG).show();
+                    floatingActionButton.setBackgroundTintList(ColorStateList.valueOf(
+                            getResources().getColor(R.color.not_favorite)
+                    ));
                 } else {
+
                     try {
                         save("", imageView);
                     } catch (IOException e) {
@@ -270,6 +288,9 @@ public class MovieDetails_Fragment extends Fragment implements View.OnClickListe
                     }
 
                     Snackbar.make(v, "Added to favorite movies", Snackbar.LENGTH_LONG).show();
+                    floatingActionButton.setBackgroundTintList(ColorStateList.valueOf(
+                            getResources().getColor(R.color.favorite)
+                    ));
                 }
                 break;
         }

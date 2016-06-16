@@ -86,6 +86,8 @@ public class GridViewFragment extends Fragment implements AdapterView.OnItemClic
         return rootView;
     }
 
+
+
     private void GetMoviesDataFromJson(String jsonString) {
         GridData = new ArrayList<>();
         try {
