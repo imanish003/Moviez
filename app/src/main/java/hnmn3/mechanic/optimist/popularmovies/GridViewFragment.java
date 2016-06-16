@@ -3,6 +3,7 @@ package hnmn3.mechanic.optimist.popularmovies;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -15,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -47,33 +49,37 @@ public class GridViewFragment extends Fragment implements AdapterView.OnItemClic
     private static final String TAG = MainActivity.class.getSimpleName();
     private android.widget.GridView GridView;
     String baseUrl;
+    TextView tvNoFavMovie;
     private GridViewAdapter GridAdapter;
     private ArrayList<GridItem> GridData;
     JSONArray jsonArray;
-    private Boolean mTablet=false;
+    private Boolean mTablet = false;
+    Typeface font;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        rootView = inflater.inflate(R.layout.grid_view_fragment,container,false);
+        rootView = inflater.inflate(R.layout.grid_view_fragment, container, false);
 
+        tvNoFavMovie = (TextView) rootView.findViewById(R.id.tvNoFavoriteMovies);
         GridData = new ArrayList<>();
         GridView = (GridView) rootView.findViewById(R.id.gridView);
         GridView.setOnItemClickListener(this);
         GridAdapter = new GridViewAdapter(getContext(), R.layout.gridview_item, GridData);
         GridView.setAdapter(GridAdapter);
+        font = Typeface.createFromAsset(getContext().getAssets(), "fonts/myfont.ttf");
 
         int densityDpi = getResources().getDisplayMetrics().densityDpi;
         if (densityDpi <= DisplayMetrics.DENSITY_MEDIUM) {
-            baseUrl= "http://image.tmdb.org/t/p/w185/";
+            baseUrl = "http://image.tmdb.org/t/p/w185/";
         } else if (densityDpi <= DisplayMetrics.DENSITY_HIGH) {
-            baseUrl= "http://image.tmdb.org/t/p/w185/";
+            baseUrl = "http://image.tmdb.org/t/p/w185/";
         } else if (densityDpi <= DisplayMetrics.DENSITY_XHIGH) {
-            baseUrl= "http://image.tmdb.org/t/p/w342/";
+            baseUrl = "http://image.tmdb.org/t/p/w342/";
         } else if (densityDpi <= DisplayMetrics.DENSITY_XXHIGH) {
-            baseUrl= "http://image.tmdb.org/t/p/w500/";
+            baseUrl = "http://image.tmdb.org/t/p/w500/";
         } else {
-            baseUrl= "http://image.tmdb.org/t/p/w780/";
+            baseUrl = "http://image.tmdb.org/t/p/w780/";
         }
 
         updateMovies();
@@ -81,21 +87,21 @@ public class GridViewFragment extends Fragment implements AdapterView.OnItemClic
         return rootView;
     }
 
-    private void GetMoviesDataFromJson(String jsonString){
+    private void GetMoviesDataFromJson(String jsonString) {
         GridData = new ArrayList<>();
         try {
             JSONObject jsonObject = new JSONObject(jsonString);
             jsonArray = jsonObject.getJSONArray("results");
-            for(int i=0;i<jsonArray.length();i++){
+            for (int i = 0; i < jsonArray.length(); i++) {
                 jsonObject = jsonArray.getJSONObject(i);
-                String url = baseUrl +jsonObject.getString("poster_path");
+                String url = baseUrl + jsonObject.getString("poster_path");
                 String overview = jsonObject.getString("overview");
                 String release_date = jsonObject.getString("release_date");
                 String original_title = jsonObject.getString("original_title");
                 String vote_average = jsonObject.getString("vote_average");
                 String id = jsonObject.getString("id");
-                System.out.print("id="+id);
-                GridItem item = new GridItem(url,overview,release_date,original_title,vote_average,id);
+                System.out.print("id=" + id);
+                GridItem item = new GridItem(url, overview, release_date, original_title, vote_average, id);
                 GridData.add(item);
             }
         } catch (JSONException e) {
@@ -103,25 +109,27 @@ public class GridViewFragment extends Fragment implements AdapterView.OnItemClic
         }
     }
 
-    private void GetMoviesDataFromContentProvider(){
+    private void GetMoviesDataFromContentProvider() {
         GridData = new ArrayList<>();
-        Cursor cursor ;
-        Uri uri = Uri.parse(MovieContract.BASE_CONTENT_URI + "/" + MovieContract.FavoriteTableContents.TABLE_NAME+"/all" );
-        cursor = getContext().getContentResolver().query(uri,null,null,null,null);
-        if(cursor != null && cursor.moveToFirst()){
-            do{
+        Cursor cursor;
+        Uri uri = Uri.parse(MovieContract.BASE_CONTENT_URI + "/" + MovieContract.FavoriteTableContents.TABLE_NAME + "/all");
+        cursor = getContext().getContentResolver().query(uri, null, null, null, null);
+        if (cursor != null && cursor.moveToFirst()) {
+            do {
                 String url = cursor.getString(3);
                 String overview = cursor.getString(2);
                 String release_date = cursor.getString(5);
                 String original_title = cursor.getString(1);
                 String vote_average = cursor.getString(4);
-                String id = cursor.getInt(0)+"";
-                GridItem item = new GridItem(url,overview,release_date,original_title,vote_average,id);
+                String id = cursor.getInt(0) + "";
+                GridItem item = new GridItem(url, overview, release_date, original_title, vote_average, id);
                 GridData.add(item);
-            }while(cursor.moveToNext());
+            } while (cursor.moveToNext());
             GridAdapter.setGridData(GridData);
-        }else{
-            Toast.makeText(getContext(),"You have no favorite movies",Toast.LENGTH_LONG).show();
+        } else {
+            //Toast.makeText(getContext(),"You have no favorite movies",Toast.LENGTH_LONG).show();
+            tvNoFavMovie.setTypeface(font);
+            tvNoFavMovie.setVisibility(View.VISIBLE);
         }
 
     }
@@ -131,19 +139,19 @@ public class GridViewFragment extends Fragment implements AdapterView.OnItemClic
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Toast.makeText(getActivity(), GridData.get(position).getoriginal_title(), Toast.LENGTH_SHORT).show();
 
-        mTablet = ((MainActivity)getActivity()).isTablet();
-        if(!mTablet){
-            Intent i = new Intent(getActivity(),MovieDetails_Activity.class);
+        mTablet = ((MainActivity) getActivity()).isTablet();
+        if (!mTablet) {
+            Intent i = new Intent(getActivity(), MovieDetails_Activity.class);
             i.putExtra("getoriginal_title", GridData.get(position).getoriginal_title());
             i.putExtra("getoverview", GridData.get(position).getoverview());
             i.putExtra("getrelease_date", GridData.get(position).getrelease_date());
             i.putExtra("getURL", GridData.get(position).getURL());
             i.putExtra("getvote_average", GridData.get(position).getvote_average());
-            i.putExtra("id",GridData.get(position).getId());
+            i.putExtra("id", GridData.get(position).getId());
             startActivity(i);
-        }else{
-            ((MainActivity)getActivity()).replaceFragment(GridData.get(position).getoriginal_title(),GridData.get(position).getoverview(),GridData.get(position).getrelease_date()
-            ,GridData.get(position).getURL(),GridData.get(position).getvote_average(),GridData.get(position).getId());
+        } else {
+            ((MainActivity) getActivity()).replaceFragment(GridData.get(position).getoriginal_title(), GridData.get(position).getoverview(), GridData.get(position).getrelease_date()
+                    , GridData.get(position).getURL(), GridData.get(position).getvote_average(), GridData.get(position).getId());
         }
 
 
@@ -156,11 +164,9 @@ public class GridViewFragment extends Fragment implements AdapterView.OnItemClic
 
         @Override
         protected String doInBackground(String... params) {
-            String url_ = "http://api.themoviedb.org/3"+params[0];
+            String url_ = "http://api.themoviedb.org/3" + params[0];
             try {
                 URL url = new URL(url_);
-
-
 
 
                 conn = (HttpURLConnection) url.openConnection();
@@ -236,14 +242,14 @@ public class GridViewFragment extends Fragment implements AdapterView.OnItemClic
         updateMovies();
     }
 
-    void updateMovies(){
+    void updateMovies() {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         //Toast.makeText(getContext(), "pref ="+preferences.getString("filter","/movie/popular"), Toast.LENGTH_SHORT).show();
-        String url_end = preferences.getString("filter","/movie/popular");
-        if(url_end.equals("favorite")){
-            Toast.makeText(getContext(), "Here", Toast.LENGTH_SHORT).show();
+        String url_end = preferences.getString("filter", "/movie/popular");
+        if (url_end.equals("favorite")) {
+            //Toast.makeText(getContext(), "Here", Toast.LENGTH_SHORT).show();
             GetMoviesDataFromContentProvider();
-        }else{
+        } else {
             new GetMoviesInfo().execute(url_end);
         }
     }

@@ -4,7 +4,6 @@ package hnmn3.mechanic.optimist.popularmovies;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -12,14 +11,15 @@ import android.view.MenuItem;
 public class MainActivity extends AppCompatActivity {
 
     private Boolean mTabletMode = false;
-    private Fragment fragment;
+    GridViewFragment gridViewFragment;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
-        fragment = (Fragment) getSupportFragmentManager().findFragmentById(R.id.gridViewFragment);
+        gridViewFragment = new GridViewFragment();
+        getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment,gridViewFragment).commit();
         if(findViewById(R.id.container)!=null){
             mTabletMode = true;
             MovieDetails_Fragment detailsFragment = new MovieDetails_Fragment();
@@ -64,29 +64,20 @@ public class MainActivity extends AppCompatActivity {
             case R.id.menuPopular:
                 editor.putString("filter","/movie/popular");
                 editor.commit();
-                getSupportFragmentManager()
-                        .beginTransaction()
-                        .detach(fragment)
-                        .attach(fragment)
-                        .commit();
+                gridViewFragment = new GridViewFragment();
+                getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment,gridViewFragment).commit();
                 break;
             case R.id.menuTopRated:
                 editor.putString("filter","/movie/top_rated");
                 editor.commit();
-                getSupportFragmentManager()
-                        .beginTransaction()
-                        .detach(fragment)
-                        .attach(fragment)
-                        .commit();
+                gridViewFragment = new GridViewFragment();
+                getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment,gridViewFragment).commit();
                 break;
             case R.id.menuFavorite:
                 editor.putString("filter","favorite");
                 editor.commit();
-                getSupportFragmentManager()
-                        .beginTransaction()
-                        .detach(fragment)
-                        .attach(fragment)
-                        .commit();
+                gridViewFragment = new GridViewFragment();
+                getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment,gridViewFragment).commit();
                 break;
         }
 

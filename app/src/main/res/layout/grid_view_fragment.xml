@@ -9,7 +9,7 @@
     <GridView
         android:id="@+id/gridView"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
         android:clickable="true"
         android:drawSelectorOnTop="true"
@@ -18,5 +18,18 @@
         android:horizontalSpacing="0dp"
         android:numColumns="auto_fit"
         android:verticalSpacing="0dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Sorry!! You have no favorite movies"
+        android:id="@+id/tvNoFavoriteMovies"
+        android:textSize="30dp"
+        android:visibility="gone"
+        android:layout_marginTop="50dp"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:textColor="#b3d9ff" />
 
 </LinearLayout>

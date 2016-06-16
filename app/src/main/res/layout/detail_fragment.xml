@@ -54,7 +54,9 @@
                         android:textAppearance="?android:attr/textAppearanceLarge"
                         android:textColor="#cbd6f0"
                         android:textSize="30dp"
-                        android:textStyle="bold" />
+                        android:gravity="center"
+                        android:textStyle="bold"
+                        android:id="@+id/tvReleaseDatetitle" />
 
                     <TextView
                         android:id="@+id/tvReleaseDate"
@@ -90,7 +92,8 @@
                         android:textAppearance="?android:attr/textAppearanceLarge"
                         android:textColor="#cbd6f0"
                         android:textSize="30dp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        android:id="@+id/tvRatingTitle" />
 
                     <TextView
                         android:id="@+id/tvRating"
@@ -117,7 +120,7 @@
                 android:layout_marginBottom="5dp" />
 
             <TextView
-                android:id="@+id/textView2"
+                android:id="@+id/tvOverviewTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
@@ -152,7 +155,7 @@
                 android:layout_marginBottom="5dp" />
 
             <TextView
-                android:id="@+id/textView"
+                android:id="@+id/tvTrailerTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
@@ -198,7 +201,8 @@
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textColor="#cbd6f0"
                 android:textSize="30dp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:id="@+id/tvReviewTitle" />
 
             <ProgressBar
                 android:id="@+id/progressBarReview"

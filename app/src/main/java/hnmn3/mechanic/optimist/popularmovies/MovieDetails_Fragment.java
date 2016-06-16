@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -90,9 +91,9 @@ public class MovieDetails_Fragment extends Fragment implements View.OnClickListe
         imageView = (ImageView) rootView.findViewById(R.id.ivPoster);
         pBar = (ProgressBar) rootView.findViewById(R.id.progressBarReview);
         trailerLayout = (LinearLayout) rootView.findViewById(R.id.linearLayoutYoutube);
-        tvReleaseDate.setTypeface(EasyFonts.droidSerifBold(getContext()));
-        tvRating.setTypeface(EasyFonts.droidSerifBold(getContext()));
-        tvOverview.setTypeface(EasyFonts.droidSerifBold(getContext()));
+
+
+        setTypeFaceTv();
 
         //Is favorite
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
@@ -145,6 +146,26 @@ public class MovieDetails_Fragment extends Fragment implements View.OnClickListe
         floatingActionButton.setOnClickListener(this);
 
         return rootView;
+    }
+
+    private void setTypeFaceTv() {
+        Typeface myfont = Typeface.createFromAsset(getContext().getAssets(), "fonts/myfont.ttf");
+        TextView tvReleaseDatetitle,tvRatingTitle,tvOverviewTitle,tvTrailerTitle,tvReviewTitle,tvReview;
+        tvReleaseDatetitle = (TextView) rootView.findViewById(R.id.tvReleaseDatetitle);
+        tvRatingTitle = (TextView) rootView.findViewById(R.id.tvRatingTitle);
+        tvOverviewTitle = (TextView) rootView.findViewById(R.id.tvOverviewTitle);
+        tvTrailerTitle = (TextView) rootView.findViewById(R.id.tvTrailerTitle);
+        tvReviewTitle = (TextView) rootView.findViewById(R.id.tvReviewTitle);
+
+        tvReleaseDatetitle.setTypeface(myfont);
+        tvRatingTitle.setTypeface(myfont);
+        tvOverviewTitle.setTypeface(myfont);
+        tvTrailerTitle.setTypeface(myfont);
+        tvReviewTitle.setTypeface(myfont);
+
+        tvReleaseDate.setTypeface(EasyFonts.droidSerifBold(getContext()));
+        tvRating.setTypeface(EasyFonts.droidSerifBold(getContext()));
+        tvOverview.setTypeface(EasyFonts.droidSerifBold(getContext()));
     }
 
     public void load(String path, String id) {
@@ -229,7 +250,7 @@ public class MovieDetails_Fragment extends Fragment implements View.OnClickListe
                     uri = Uri.parse(MovieContract.BASE_CONTENT_URI + "/" + MovieContract.TrailerTableContent.TABLE_NAME);
                     Trailer trailer;
 
-                    Toast.makeText(getContext(), "trailerListsize=" + trailerList.size(), Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getContext(), "trailerListsize=" + trailerList.size(), Toast.LENGTH_SHORT).show();
                     for (int i = 0; i < trailerList.size(); i++) {
                         values = new ContentValues();
                         trailer = trailerList.get(i);
