@@ -5,7 +5,7 @@
 
 
 * Upon launch, present the user with an grid arrangement of movie posters.
-* Allow your user to change sort order via a menu:
+* Allow user to change sort order via a menu:
     * the sort order can be by most popular, or by top rated or by Favorite
 * Allow the user to tap on a movie poster and transition to a details screen with additional information such as:
     * original title
