@@ -20,9 +20,9 @@
 
 
 
-* ##### used Picasso library for handle image loading and caching.
-* ##### used  themoviedb.org API.
-* ##### used Content Providers for data storage.
+##### used Picasso library for handle image loading and caching.
+##### used  themoviedb.org API.
+##### used Content Providers for data storage.
  
 
 
