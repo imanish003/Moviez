@@ -17,7 +17,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -129,15 +128,20 @@ public class GridViewFragment extends Fragment implements AdapterView.OnItemClic
         } else {
             //Toast.makeText(getContext(),"You have no favorite movies",Toast.LENGTH_LONG).show();
             tvNoFavMovie.setTypeface(font);
+            GridView.setVisibility(View.GONE);
             tvNoFavMovie.setVisibility(View.VISIBLE);
         }
 
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Toast.makeText(getActivity(), GridData.get(position).getoriginal_title(), Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getActivity(), GridData.get(position).getoriginal_title(), Toast.LENGTH_SHORT).show();
 
         mTablet = ((MainActivity) getActivity()).isTablet();
         if (!mTablet) {

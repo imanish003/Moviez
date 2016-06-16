@@ -91,7 +91,7 @@ public class MovieDetails_Fragment extends Fragment implements View.OnClickListe
         imageView = (ImageView) rootView.findViewById(R.id.ivPoster);
         pBar = (ProgressBar) rootView.findViewById(R.id.progressBarReview);
         trailerLayout = (LinearLayout) rootView.findViewById(R.id.linearLayoutYoutube);
-
+        setRetainInstance (true);
 
         setTypeFaceTv();
 
@@ -150,7 +150,7 @@ public class MovieDetails_Fragment extends Fragment implements View.OnClickListe
 
     private void setTypeFaceTv() {
         Typeface myfont = Typeface.createFromAsset(getContext().getAssets(), "fonts/myfont.ttf");
-        TextView tvReleaseDatetitle,tvRatingTitle,tvOverviewTitle,tvTrailerTitle,tvReviewTitle,tvReview;
+        TextView tvReleaseDatetitle, tvRatingTitle, tvOverviewTitle, tvTrailerTitle, tvReviewTitle, tvReview;
         tvReleaseDatetitle = (TextView) rootView.findViewById(R.id.tvReleaseDatetitle);
         tvRatingTitle = (TextView) rootView.findViewById(R.id.tvRatingTitle);
         tvOverviewTitle = (TextView) rootView.findViewById(R.id.tvOverviewTitle);
@@ -178,16 +178,15 @@ public class MovieDetails_Fragment extends Fragment implements View.OnClickListe
         }
     }
 
-    public void load(String path, String id,String source,ImageView imageView) {
+    public void load(String path, String id, String source, ImageView imageView) {
         try {
-            File f = new File(path, source+id + ".jpg");
+            File f = new File(path, source + id + ".jpg");
             Bitmap b = BitmapFactory.decodeStream(new FileInputStream(f));
             imageView.setImageBitmap(b);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
     }
-
 
 
     @Override
@@ -260,11 +259,14 @@ public class MovieDetails_Fragment extends Fragment implements View.OnClickListe
                             ImageView imageView = (ImageView) rootView.findViewById(trailerIdList.get(i));
                             save(trailer.getSource(), imageView);
                             values.put(MovieContract.TrailerTableContent.COLUMN_source, poster_path);
+                            values.put(MovieContract.TrailerTableContent.COLUMN_Trailer_name, trailer.getName());
+                            getContext().getContentResolver().insert(uri, values);
+                        }catch (ClassCastException e) {
+                            Snackbar.make(v, "Trailers are loading , Cant make it favorite", Snackbar.LENGTH_LONG).show();
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
-                        values.put(MovieContract.TrailerTableContent.COLUMN_Trailer_name, trailer.getName());
-                        getContext().getContentResolver().insert(uri, values);
+
                     }
 
                     Snackbar.make(v, "Added to favorite movies", Snackbar.LENGTH_LONG).show();
@@ -273,27 +275,31 @@ public class MovieDetails_Fragment extends Fragment implements View.OnClickListe
         }
     }
 
-    public void save(String s, ImageView v) throws IOException {
-        Bitmap bitmap = ((BitmapDrawable) v.getDrawable()).getBitmap();
-
-        ContextWrapper cw = new ContextWrapper(getContext());
-        // path to /data/data/yourapp/app_data/imageDir
-        File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
-        // Create imageDir
-        File mypath = new File(directory, s + id + ".jpg");
+    public void save(String s, ImageView v) throws IOException,ClassCastException {
 
         FileOutputStream fos = null;
+
         try {
+            Bitmap bitmap = ((BitmapDrawable) v.getDrawable()).getBitmap();
+            ContextWrapper cw = new ContextWrapper(getContext());
+            // path to /data/data/yourapp/app_data/imageDir
+            File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
+            // Create imageDir
+            File mypath = new File(directory, s + id + ".jpg");
+
+
             fos = new FileOutputStream(mypath);
             // Use the compress method on the BitMap object to write image to the OutputStream
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
+            poster_path = directory.getAbsolutePath();
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            fos.close();
+            if (fos != null)
+                fos.close();
         }
 
-        poster_path = directory.getAbsolutePath();
+
     }
 
     private class GetReviewAndTrailers extends AsyncTask<String, Void, String> {
@@ -387,7 +393,7 @@ public class MovieDetails_Fragment extends Fragment implements View.OnClickListe
                 params.bottomMargin = 3;
                 myImage.setLayoutParams(params);
                 if (isFavorite) {
-                    load(path,id,source,myImage);
+                    load(path, id, source, myImage);
                     String s = "manish";
                 } else {
                     Picasso.with(getContext())
@@ -426,6 +432,11 @@ public class MovieDetails_Fragment extends Fragment implements View.OnClickListe
         }
     }
 
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
 
     private void fatchReviewNTrailerDataFromContentProvider() {
         Review review;
