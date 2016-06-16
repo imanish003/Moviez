@@ -19,17 +19,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".Filter_Activity"
-            android:label="Filter"
-            android:theme="@style/MyTheme.UserDialog"
-            android:parentActivityName=".MainActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity"
-                />
-        </activity>
         <activity android:name=".MovieDetails_Activity"></activity>
+        <provider
+            android:name="data.MovieContentProvider"
+            android:authorities="hnmn3.mechanic.optimist.popularmovies" >
+        </provider>
     </application>
 
 </manifest>

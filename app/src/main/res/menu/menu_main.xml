@@ -2,10 +2,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="hnmn3.mechanic.optimist.popularmovies.MainActivity">
+
     <item
-        android:id="@+id/action_filter"
-        android:orderInCategory="100"
         android:icon="@drawable/filter"
         android:title="Filter"
-        app:showAsAction="always" />
+        app:showAsAction="always">
+        <menu>
+            <item
+                android:id="@+id/menuPopular"
+                android:title="Popular" />
+            <item
+                android:id="@+id/menuTopRated"
+                android:title="Top Rated" />
+            <item
+                android:id="@+id/menuFavorite"
+                android:title="Favorite" />
+        </menu>
+    </item>
 </menu>

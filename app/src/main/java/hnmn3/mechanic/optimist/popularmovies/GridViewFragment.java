@@ -2,6 +2,8 @@ package hnmn3.mechanic.optimist.popularmovies;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -33,12 +35,15 @@ import java.util.ArrayList;
 
 import adapter.GridItem;
 import adapter.GridViewAdapter;
+import data.MovieContract;
 
 /**
  * Created by Manish Menaria on 09-Jun-16.
  */
 
 public class GridViewFragment extends Fragment implements AdapterView.OnItemClickListener {
+
+    View rootView;
     private static final String TAG = MainActivity.class.getSimpleName();
     private android.widget.GridView GridView;
     String baseUrl;
@@ -50,7 +55,7 @@ public class GridViewFragment extends Fragment implements AdapterView.OnItemClic
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.grid_view_fragment,container,false);
+        rootView = inflater.inflate(R.layout.grid_view_fragment,container,false);
 
         GridData = new ArrayList<>();
         GridView = (GridView) rootView.findViewById(R.id.gridView);
@@ -97,6 +102,30 @@ public class GridViewFragment extends Fragment implements AdapterView.OnItemClic
             e.printStackTrace();
         }
     }
+
+    private void GetMoviesDataFromContentProvider(){
+        GridData = new ArrayList<>();
+        Cursor cursor ;
+        Uri uri = Uri.parse(MovieContract.BASE_CONTENT_URI + "/" + MovieContract.FavoriteTableContents.TABLE_NAME+"/all" );
+        cursor = getContext().getContentResolver().query(uri,null,null,null,null);
+        if(cursor != null && cursor.moveToFirst()){
+            do{
+                String url = cursor.getString(3);
+                String overview = cursor.getString(2);
+                String release_date = cursor.getString(5);
+                String original_title = cursor.getString(1);
+                String vote_average = cursor.getString(4);
+                String id = cursor.getInt(0)+"";
+                GridItem item = new GridItem(url,overview,release_date,original_title,vote_average,id);
+                GridData.add(item);
+            }while(cursor.moveToNext());
+            GridAdapter.setGridData(GridData);
+        }else{
+            Toast.makeText(getContext(),"You have no favorite movies",Toast.LENGTH_LONG).show();
+        }
+
+    }
+
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -209,7 +238,14 @@ public class GridViewFragment extends Fragment implements AdapterView.OnItemClic
 
     void updateMovies(){
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+        //Toast.makeText(getContext(), "pref ="+preferences.getString("filter","/movie/popular"), Toast.LENGTH_SHORT).show();
         String url_end = preferences.getString("filter","/movie/popular");
-        new GetMoviesInfo().execute(url_end);
+        if(url_end.equals("favorite")){
+            Toast.makeText(getContext(), "Here", Toast.LENGTH_SHORT).show();
+            GetMoviesDataFromContentProvider();
+        }else{
+            new GetMoviesInfo().execute(url_end);
+        }
     }
+
 }

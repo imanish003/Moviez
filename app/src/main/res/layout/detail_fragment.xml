@@ -1,198 +1,246 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#7e6ab4">
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/viewCoordinator"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
 
-
-    <LinearLayout
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:background="#7e6ab4">
 
-        <RelativeLayout
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:context="hnmn3.mechanic.optimist.popularmovies.MovieDetails_Activity">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-            <ImageView
-                android:id="@+id/ivPoster"
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:context="hnmn3.mechanic.optimist.popularmovies.MovieDetails_Activity">
+
+                <ImageView
+                    android:id="@+id/ivPoster"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:src="@drawable/mv"
+                    android:layout_margin="5dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_alignBottom="@+id/ivPoster"
+                    android:layout_alignTop="@+id/ivPoster"
+                    android:layout_gravity="bottom"
+                    android:layout_toEndOf="@+id/ivPoster"
+                    android:layout_toRightOf="@+id/ivPoster"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignLeft="@+id/tvReleaseDate"
+                        android:layout_alignStart="@+id/tvReleaseDate"
+                        android:layout_below="@+id/tvReleaseDate"
+                        android:layout_gravity="center_horizontal"
+                        android:paddingBottom="5dp"
+                        android:text="Release Date"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:textColor="#cbd6f0"
+                        android:textSize="30dp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tvReleaseDate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignLeft="@+id/tvRating"
+                        android:layout_alignStart="@+id/tvRating"
+                        android:layout_below="@+id/tvRating"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginBottom="30dp"
+                        android:text="2016-03-23"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="#d8c8df"
+                        android:textSize="25dp"
+                        android:textStyle="bold|italic" />
+
+                    <View
+                        android:layout_width="fill_parent"
+                        android:layout_height="2dp"
+                        android:background="#c0c0c0"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignLeft="@+id/tvRating"
+                        android:layout_alignStart="@+id/tvRating"
+                        android:layout_below="@+id/tvRating"
+                        android:layout_gravity="center_horizontal"
+                        android:paddingBottom="5dp"
+                        android:text="Rating"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:textColor="#cbd6f0"
+                        android:textSize="30dp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tvRating"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignLeft="@+id/ivPoster"
+                        android:layout_alignStart="@+id/ivPoster"
+                        android:layout_below="@+id/ivPoster"
+                        android:layout_gravity="center_horizontal"
+                        android:text="5.77/10"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="#d8c8df"
+                        android:textSize="25dp"
+                        android:textStyle="bold|italic" />
+                </LinearLayout>
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="5dp"
+                android:background="#c0c0c0"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp" />
+
+            <TextView
+                android:id="@+id/textView2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:src="@drawable/mv"
-                android:layout_marginBottom="10dp" />
+                android:layout_below="@+id/ivPoster"
+                android:layout_margin="2dp"
+                android:text="Overview : "
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="#cbd6f0"
+                android:textSize="30dp"
+                android:textStyle="bold" />
 
-            <LinearLayout
+            <TextView
+                android:id="@+id/tvOverview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/tvOvervi"
+                android:layout_marginLeft="15dp"
+                android:text="Fearing the actions of a god-like Super Hero left unchecked, Gotham City’s own formidable, forceful vigilante takes on Metropolis’s most revered, modern-day savior, while the world wrestles with what sort of hero it really needs. And with Batman and Superman at war with one another, a new threat quickly arises, putting mankind in greater danger than it’s ever known before."
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="#d8c8df"
+                android:textSize="25dp" />
+
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="5dp"
+                android:background="#c0c0c0"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp" />
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/ivPoster"
+                android:layout_margin="2dp"
+                android:text="Trailers : "
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="#cbd6f0"
+                android:textSize="30dp"
+                android:textStyle="bold" />
+
+            <HorizontalScrollView
+                android:id="@+id/horizontalScrollViewYoutube"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_alignBottom="@+id/ivPoster"
-                android:layout_alignTop="@+id/ivPoster"
-                android:layout_gravity="bottom"
-                android:layout_toEndOf="@+id/ivPoster"
-                android:layout_toRightOf="@+id/ivPoster"
-                android:orientation="vertical">
+                android:layout_height="100dp"
+                android:layout_marginTop="10sp"
+                android:fillViewport="false">
 
-                <TextView
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:id="@+id/linearLayoutYoutube"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_alignLeft="@+id/tvReleaseDate"
-                    android:layout_alignStart="@+id/tvReleaseDate"
-                    android:layout_below="@+id/tvReleaseDate"
-                    android:layout_gravity="center_horizontal"
-                    android:paddingBottom="5dp"
-                    android:text="Release Date"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:textColor="#cbd6f0"
-                    android:textSize="30dp"
-                    android:textStyle="bold" />
+                    android:orientation="horizontal" />
+            </HorizontalScrollView>
 
-                <TextView
-                    android:id="@+id/tvReleaseDate"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignLeft="@+id/tvRating"
-                    android:layout_alignStart="@+id/tvRating"
-                    android:layout_below="@+id/tvRating"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginBottom="30dp"
-                    android:text="2016-03-23"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="#d8c8df"
-                    android:textSize="25dp"
-                    android:textStyle="bold|italic" />
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="5dp"
+                android:background="#c0c0c0"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignLeft="@+id/tvRating"
-                    android:layout_alignStart="@+id/tvRating"
-                    android:layout_below="@+id/tvRating"
-                    android:layout_gravity="center_horizontal"
-                    android:paddingBottom="5dp"
-                    android:text="Rating"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:textColor="#cbd6f0"
-                    android:textSize="30dp"
-                    android:textStyle="bold" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/ivPoster"
+                android:layout_gravity="left|center_horizontal"
+                android:layout_marginTop="10dp"
+                android:text="Reviews : "
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="#cbd6f0"
+                android:textSize="30dp"
+                android:textStyle="bold" />
 
-                <TextView
-                    android:id="@+id/tvRating"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignLeft="@+id/ivPoster"
-                    android:layout_alignStart="@+id/ivPoster"
-                    android:layout_below="@+id/ivPoster"
-                    android:layout_gravity="center_horizontal"
-                    android:text="5.77/10"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="#d8c8df"
-                    android:textSize="25dp"
-                    android:textStyle="bold|italic" />
-            </LinearLayout>
+            <ProgressBar
+                android:id="@+id/progressBarReview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:indeterminate="false" />
 
-        </RelativeLayout>
+            <TextView
+                android:id="@+id/tvNoReviewAvailbale"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/author"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="10dp"
+                android:text="Sorry , No reviews available for this movie."
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="#d8c8df"
+                android:textSize="25dp"
+                android:visibility="gone" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/ivPoster"
-            android:layout_margin="2dp"
-            android:text="Overview : "
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="#cbd6f0"
-            android:textSize="30dp"
-            android:textStyle="bold"
-            android:id="@+id/textView2" />
-
-        <TextView
-            android:id="@+id/tvOverview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/tvOvervi"
-            android:text="Fearing the actions of a god-like Super Hero left unchecked, Gotham City’s own formidable, forceful vigilante takes on Metropolis’s most revered, modern-day savior, while the world wrestles with what sort of hero it really needs. And with Batman and Superman at war with one another, a new threat quickly arises, putting mankind in greater danger than it’s ever known before."
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="#d8c8df"
-            android:textSize="25dp"
-            android:layout_marginLeft="15dp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/ivPoster"
-            android:layout_margin="2dp"
-            android:text="Trailers : "
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="#cbd6f0"
-            android:textSize="30dp"
-            android:textStyle="bold"
-            android:id="@+id/textView" />
-
-        <HorizontalScrollView
-            android:id="@+id/horizontalScrollViewYoutube"
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:layout_marginTop="10sp"
-            android:fillViewport="false">
-
-            <LinearLayout
-                android:id="@+id/linearLayoutYoutube"
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal" />
-        </HorizontalScrollView>
+                android:layout_marginLeft="15dp"
+                android:clickable="false"
+                android:scrollbars="vertical" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/ivPoster"
-            android:layout_gravity="left|center_horizontal"
-            android:text="Reviews : "
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="#cbd6f0"
-            android:textSize="30dp"
-            android:textStyle="bold"
-            android:layout_marginTop="10dp" />
 
-        <ProgressBar
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/progressBarReview"
-            android:layout_marginLeft="15dp"
-            android:indeterminate="false" />
+        </LinearLayout>
+    </ScrollView>
 
-        <TextView
-            android:id="@+id/tvNoReviewAvailbale"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Sorry , No reviews available for this movie."
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="#d8c8df"
-            android:textSize="25dp"
-            android:layout_below="@+id/author"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:layout_marginLeft="15dp"
-            android:visibility="gone" />
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recycler_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:clickable="false"
-            android:scrollbars="vertical"
-            android:layout_marginLeft="15dp" />
-    </LinearLayout>
-</ScrollView>
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/viewFloatingButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|right"
+        android:src="@drawable/heart_red"
+        android:layout_margin="15dp"
+        android:alpha="0.4"
+        app:backgroundTint="@color/not_favorite" />
+</android.support.design.widget.CoordinatorLayout>

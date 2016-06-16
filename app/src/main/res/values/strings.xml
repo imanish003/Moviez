@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">PopularMovies</string>
+    <string name="app_name">Moviez</string>
     <string name="action_settings">Settings</string>
 
     <string-array name="filter_options">

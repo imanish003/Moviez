@@ -1,13 +1,12 @@
 package data;
 
-import android.content.ContentResolver;
-import android.content.ContentUris;
 import android.net.Uri;
 import android.provider.BaseColumns;
 
 /**
  * Created by Manish Menaria on 09-Jun-16.
  */
+
 public class MovieContract {
     public static final String CONTENT_AUTHORITY = "hnmn3.mechanic.optimist.popularmovies";
 
@@ -15,38 +14,45 @@ public class MovieContract {
     // the content provider.
     public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
 
-    public static final String PATH_POPULAR = "popular";
-    public static final String PATH_TOPRATED = "toprated";
+    public static final String PATH_FAVORITE = "favorite";
+    public static final String PATH_REVIEW = "review";
+    public static final String PATH_TRAILER = "trailer";
 
     /* Inner class that defines the table contents of the popular table */
-    public static final class PopularTableContents implements BaseColumns {
+    public static final class FavoriteTableContents implements BaseColumns {
 
-        public static final Uri CONTENT_URI =
-                BASE_CONTENT_URI.buildUpon().appendPath(PATH_POPULAR).build();
+        public static final String TABLE_NAME = "favorite";
 
-        public static final String CONTENT_TYPE =
-                ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_POPULAR;
-        public static final String CONTENT_ITEM_TYPE =
-                ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_POPULAR;
+        public static final String COLUMN_release_date = "release_date";
+        public static final String COLUMN_poster_path = "poster_path";
+        public static final String COLUMN_overview = "overview";
+        public static final String COLUMN_original_title = "original_title";
+        public static final String COLUMN_vote_average = "vote_average";
+        public static final String COLUMN_ = "";
 
-        // Table name
-        public static final String TABLE_NAME = "popular";
 
-        // The location setting string is what will be sent to openweathermap
-        // as the location query.
-        public static final String COLUMN_LOCATION_SETTING = "location_setting";
-
-        // Human readable location string, provided by the API.  Because for styling,
-        // "Mountain View" is more recognizable than 94043.
-        public static final String COLUMN_CITY_NAME = "city_name";
-
-        // In order to uniquely pinpoint the location on the map when we launch the
-        // map intent, we store the latitude and longitude as returned by openweathermap.
-        public static final String COLUMN_COORD_LAT = "coord_lat";
-        public static final String COLUMN_COORD_LONG = "coord_long";
-
-        public static Uri buildLocationUri(long id) {
-            return ContentUris.withAppendedId(CONTENT_URI, id);
-        }
     }
+
+    public static final class ReviewTableContent implements BaseColumns {
+        // Table name
+        public static final String TABLE_NAME = "review";
+
+        public static final String COLUMN_author = "author";
+        public static final String COLUMN_review = "content";
+        public static final String COLUMN_movie_id = "movie_id";
+
+    }
+
+    public static final class TrailerTableContent implements BaseColumns {
+        // Table name
+        public static final String TABLE_NAME = "trailer";
+
+        public static final String COLUMN_source = "source";
+        public static final String COLUMN_Trailer_name = "name";
+        public static final String COLUMN_Internet_Source= "url_source";
+        public static final String COLUMN_movie_id = "movie_id";
+
+    }
+
+
 }
