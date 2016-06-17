@@ -4,7 +4,7 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="author">#222222</color>
-    <color name="favorite">#ff4d4d</color>
-    <color name="not_favorite">#800000</color>
+    <color name="favorite">#FFF32121</color>
+    <color name="not_favorite">#fa7c7c</color>
 
 </resources>

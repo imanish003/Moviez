@@ -30,6 +30,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -64,6 +65,7 @@ import review.ReviewAdapter;
  */
 public class MovieDetails_Fragment extends Fragment implements View.OnClickListener {
 
+    GetReviewAndTrailers getReviewAndTrailersAsyncTask;
     View rootView;
     TextView tvReleaseDate, tvRating, tvOverview, noReviewAvailable;
     String id, vote_average, release_date, poster_path, overview, original_title;
@@ -77,14 +79,19 @@ public class MovieDetails_Fragment extends Fragment implements View.OnClickListe
     private ReviewAdapter mAdapter;
     private FloatingActionButton floatingActionButton;
     private List<Integer> trailerIdList = new ArrayList<Integer>();
-    Boolean bAlreadyFavorite = false, isFavorite = false;
+    Boolean isFavorite = false;
+    ScrollView scrollViewDetailView;
+    TextView tvNoMovieSelected;
 
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.detail_fragment, container, false);
-        if(savedInstanceState==null){
+        if (savedInstanceState == null) {
+            scrollViewDetailView=(ScrollView) rootView.findViewById(R.id.scrollViewDetailView);
+            tvNoMovieSelected = (TextView) rootView.findViewById(R.id.tvNoMovieSelected);
+
             tvReleaseDate = (TextView) rootView.findViewById(R.id.tvReleaseDate);
             tvRating = (TextView) rootView.findViewById(R.id.tvRating);
             noReviewAvailable = (TextView) rootView.findViewById(R.id.tvNoReviewAvailbale);
@@ -92,7 +99,7 @@ public class MovieDetails_Fragment extends Fragment implements View.OnClickListe
             imageView = (ImageView) rootView.findViewById(R.id.ivPoster);
             pBar = (ProgressBar) rootView.findViewById(R.id.progressBarReview);
             trailerLayout = (LinearLayout) rootView.findViewById(R.id.linearLayoutYoutube);
-            setRetainInstance (true);
+            setRetainInstance(true);
 
             setTypeFaceTv();
 
@@ -131,7 +138,6 @@ public class MovieDetails_Fragment extends Fragment implements View.OnClickListe
             }
 
 
-
             recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
 
             mAdapter = new ReviewAdapter(reviewList);
@@ -145,16 +151,26 @@ public class MovieDetails_Fragment extends Fragment implements View.OnClickListe
 
             Uri uri = Uri.parse(MovieContract.BASE_CONTENT_URI + "/" + MovieContract.FavoriteTableContents.TABLE_NAME + "/check");
             String[] selectionArgs = {id};
-            Cursor cursor = getContext().getContentResolver().query(uri, null, null, selectionArgs, null);
+            Cursor cursor=null;
+            try {
+                cursor = getContext().getContentResolver().query(uri, null, null, selectionArgs, null);
+                scrollViewDetailView.setVisibility(View.VISIBLE);
+                floatingActionButton.setVisibility(View.VISIBLE);
+                tvNoMovieSelected.setVisibility(View.GONE);
+            }catch (IllegalArgumentException e){
+                Toast.makeText(getActivity(), "Toast1", Toast.LENGTH_SHORT).show();
+            }
 
 
-            if (isFavorite || (cursor!=null && cursor.moveToFirst())) {
+            if (isFavorite || (cursor != null && cursor.moveToFirst())) {
                 floatingActionButton.setBackgroundTintList(ColorStateList.valueOf(
                         getResources().getColor(R.color.favorite)
                 ));
                 fatchReviewNTrailerDataFromContentProvider();
+
             } else {
-                new GetReviewAndTrailers().execute(id);
+                getReviewAndTrailersAsyncTask = new GetReviewAndTrailers();
+                getReviewAndTrailersAsyncTask.execute(id);
             }
         }
         return rootView;
@@ -174,6 +190,7 @@ public class MovieDetails_Fragment extends Fragment implements View.OnClickListe
         tvOverviewTitle.setTypeface(myfont);
         tvTrailerTitle.setTypeface(myfont);
         tvReviewTitle.setTypeface(myfont);
+        tvNoMovieSelected.setTypeface(myfont);
 
         tvReleaseDate.setTypeface(EasyFonts.droidSerifBold(getContext()));
         tvRating.setTypeface(EasyFonts.droidSerifBold(getContext()));
@@ -207,7 +224,13 @@ public class MovieDetails_Fragment extends Fragment implements View.OnClickListe
             case R.id.viewFloatingButton:
                 Uri uri = Uri.parse(MovieContract.BASE_CONTENT_URI + "/" + MovieContract.FavoriteTableContents.TABLE_NAME + "/check");
                 String[] selectionArgs = {id};
-                Cursor cursor = getContext().getContentResolver().query(uri, null, null, selectionArgs, null);
+                Cursor cursor=null;
+                try {
+                     cursor= getContext().getContentResolver().query(uri, null, null, selectionArgs, null);
+                }catch (IllegalArgumentException e){
+                    Toast.makeText(getActivity(), "Toast2", Toast.LENGTH_SHORT).show();
+                }
+
 
                 if (cursor.moveToFirst()) {
                     cursor.close();
@@ -277,7 +300,7 @@ public class MovieDetails_Fragment extends Fragment implements View.OnClickListe
                             values.put(MovieContract.TrailerTableContent.COLUMN_source, poster_path);
                             values.put(MovieContract.TrailerTableContent.COLUMN_Trailer_name, trailer.getName());
                             getContext().getContentResolver().insert(uri, values);
-                        }catch (ClassCastException e) {
+                        } catch (ClassCastException e) {
                             Snackbar.make(v, "Trailers are loading , Cant make it favorite", Snackbar.LENGTH_LONG).show();
                         } catch (IOException e) {
                             e.printStackTrace();
@@ -294,7 +317,7 @@ public class MovieDetails_Fragment extends Fragment implements View.OnClickListe
         }
     }
 
-    public void save(String s, ImageView v) throws IOException,ClassCastException {
+    public void save(String s, ImageView v) throws IOException, ClassCastException {
 
         FileOutputStream fos = null;
 
@@ -325,6 +348,7 @@ public class MovieDetails_Fragment extends Fragment implements View.OnClickListe
 
 
         HttpURLConnection conn;
+        String result, s = "Sorry!! error occured while loading the data";
 
         @Override
         protected String doInBackground(String... params) {
@@ -366,27 +390,39 @@ public class MovieDetails_Fragment extends Fragment implements View.OnClickListe
 
             } catch (MalformedURLException e) {
                 e.printStackTrace();
-                System.out.println("Exception1");
+                result = "Sorry!! error occured while loading the data";
             } catch (IOException e) {
                 e.printStackTrace();
-                System.out.println("Exception2");
+                result = "Sorry!! error occured while loading the data";
             } finally {
                 conn.disconnect();
             }
-            return "Null";
+            return result;
         }
 
         @Override
         protected void onPostExecute(String result) {
             pBar.setVisibility(View.GONE);
-            if (reviewList.size() == 0) {
-                noReviewAvailable.setVisibility(View.VISIBLE);
+            if (result.equals(s)) {
+                Toast.makeText(getActivity(), "Sorry!! error occured while loading the data", Toast.LENGTH_SHORT).show();
+            } else {
+                if (reviewList.size() == 0) {
+                    noReviewAvailable.setVisibility(View.VISIBLE);
+                }
+                mAdapter.notifyDataSetChanged();
+                addTailersTolayout();
             }
-            mAdapter.notifyDataSetChanged();
-            addTailersTolayout();
             //GridAdapter.setGridData(GridData);
         }
 
+    }
+
+    @Override
+    public void onStop() {
+        if (getReviewAndTrailersAsyncTask != null && getReviewAndTrailersAsyncTask.getStatus() != AsyncTask.Status.FINISHED) {
+            getReviewAndTrailersAsyncTask.cancel(false);
+        }
+        super.onStop();
     }
 
     private void addTailersTolayout() {
@@ -406,14 +442,12 @@ public class MovieDetails_Fragment extends Fragment implements View.OnClickListe
                         LinearLayout.LayoutParams.WRAP_CONTENT,
                         LinearLayout.LayoutParams.WRAP_CONTENT
                 );
-                params.leftMargin = 3;
-                params.rightMargin = 3;
-                params.topMargin = 6;
-                params.bottomMargin = 3;
+                params.setMargins(1, 1, 1, 1);
                 myImage.setLayoutParams(params);
+                myImage.setAdjustViewBounds(true);
+                myImage.setScaleType(ImageView.ScaleType.FIT_START);
                 if (isFavorite) {
                     load(path, id, source, myImage);
-                    String s = "manish";
                 } else {
                     Picasso.with(getContext())
                             .load(url)
@@ -461,10 +495,14 @@ public class MovieDetails_Fragment extends Fragment implements View.OnClickListe
         Review review;
         Trailer trailer;
         reviewList.clear();
-        Cursor cursor;
+        Cursor cursor = null;
         Uri uri = Uri.parse(MovieContract.BASE_CONTENT_URI + "/" + MovieContract.ReviewTableContent.TABLE_NAME);
         String[] args = {id};
-        cursor = getContext().getContentResolver().query(uri, null, null, args, null);
+        try {
+            cursor = getContext().getContentResolver().query(uri, null, null, args, null);
+        }catch (IllegalArgumentException e){
+            Toast.makeText(getActivity(), "Toast3", Toast.LENGTH_SHORT).show();
+        }
         if (cursor != null && cursor.moveToFirst()) {
             do {
                 review = new Review();
@@ -478,7 +516,12 @@ public class MovieDetails_Fragment extends Fragment implements View.OnClickListe
         }
 
         uri = Uri.parse(MovieContract.BASE_CONTENT_URI + "/" + MovieContract.TrailerTableContent.TABLE_NAME);
-        cursor = getContext().getContentResolver().query(uri, null, null, args, null);
+        try {
+            cursor = getContext().getContentResolver().query(uri, null, null, args, null);
+        }catch (IllegalArgumentException e){
+            Toast.makeText(getActivity(), "Toast4", Toast.LENGTH_SHORT).show();
+        }
+
         if (cursor != null && cursor.moveToFirst()) {
             do {
                 String name = cursor.getString(2);

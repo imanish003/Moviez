@@ -6,30 +6,39 @@
     android:orientation="vertical">
 
 
+    <ProgressBar
+        android:id="@+id/progressBarWait"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_marginTop="15dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:foregroundGravity="center" />
+
     <GridView
         android:id="@+id/gridView"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
-        android:clickable="true"
+        android:clickable="false"
         android:drawSelectorOnTop="true"
         android:focusable="true"
         android:gravity="center"
         android:horizontalSpacing="0dp"
-        android:numColumns="auto_fit"
+        android:numColumns="2"
         android:verticalSpacing="0dp" />
 
     <TextView
+        android:id="@+id/tvNoFavoriteMovies"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Sorry!! You have no favorite movies"
-        android:id="@+id/tvNoFavoriteMovies"
-        android:textSize="30dp"
-        android:visibility="gone"
+        android:layout_gravity="center"
         android:layout_marginTop="50dp"
         android:gravity="center"
-        android:layout_gravity="center"
-        android:textColor="#b3d9ff" />
+        android:text="Sorry!! You have no favorite movies"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="#b3d9ff"
+        android:textSize="30dp"
+        android:visibility="gone" />
 
 </LinearLayout>

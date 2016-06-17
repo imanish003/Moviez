@@ -68,7 +68,7 @@ public class GridViewAdapter extends ArrayAdapter<GridItem> {
             Picasso
                     .with(mContext)
                     .load(item.getURL())
-                    .placeholder(R.drawable.progress_animation)
+                    //.placeholder(R.drawable.progress_animation)
                     .into(holder.imageView);
         }
 

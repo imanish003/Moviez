@@ -16,7 +16,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -49,6 +51,7 @@ public class GridViewFragment extends Fragment implements AdapterView.OnItemClic
     private android.widget.GridView GridView;
     String baseUrl;
     TextView tvNoFavMovie;
+    ProgressBar progressBarWait;
     private GridViewAdapter GridAdapter;
     private ArrayList<GridItem> GridData;
     JSONArray jsonArray;
@@ -66,6 +69,7 @@ public class GridViewFragment extends Fragment implements AdapterView.OnItemClic
         GridView.setOnItemClickListener(this);
         GridAdapter = new GridViewAdapter(getContext(), R.layout.gridview_item, GridData);
         GridView.setAdapter(GridAdapter);
+        progressBarWait = (ProgressBar) rootView.findViewById(R.id.progressBarWait);
         font = Typeface.createFromAsset(getContext().getAssets(), "fonts/myfont.ttf");
 
         int densityDpi = getResources().getDisplayMetrics().densityDpi;
@@ -85,7 +89,6 @@ public class GridViewFragment extends Fragment implements AdapterView.OnItemClic
 
         return rootView;
     }
-
 
 
     private void GetMoviesDataFromJson(String jsonString) {
@@ -112,9 +115,14 @@ public class GridViewFragment extends Fragment implements AdapterView.OnItemClic
 
     private void GetMoviesDataFromContentProvider() {
         GridData = new ArrayList<>();
-        Cursor cursor;
+        Cursor cursor=null;
         Uri uri = Uri.parse(MovieContract.BASE_CONTENT_URI + "/" + MovieContract.FavoriteTableContents.TABLE_NAME + "/all");
-        cursor = getContext().getContentResolver().query(uri, null, null, null, null);
+
+        try {
+            cursor = getContext().getContentResolver().query(uri, null, null, null, null);
+        }catch (IllegalArgumentException e){
+
+        }
         if (cursor != null && cursor.moveToFirst()) {
             do {
                 String url = cursor.getString(3);
@@ -126,9 +134,14 @@ public class GridViewFragment extends Fragment implements AdapterView.OnItemClic
                 GridItem item = new GridItem(url, overview, release_date, original_title, vote_average, id);
                 GridData.add(item);
             } while (cursor.moveToNext());
+
+            if (progressBarWait != null)
+                progressBarWait.setVisibility(View.GONE);
             GridAdapter.setGridData(GridData);
         } else {
             //Toast.makeText(getContext(),"You have no favorite movies",Toast.LENGTH_LONG).show();
+            if (progressBarWait != null)
+                progressBarWait.setVisibility(View.GONE);
             tvNoFavMovie.setTypeface(font);
             GridView.setVisibility(View.GONE);
             tvNoFavMovie.setVisibility(View.VISIBLE);
@@ -167,9 +180,11 @@ public class GridViewFragment extends Fragment implements AdapterView.OnItemClic
 
 
         HttpURLConnection conn;
+        String s = "Sorry!! error occured while loading the data";
 
         @Override
         protected String doInBackground(String... params) {
+            String result;
             String url_ = "http://api.themoviedb.org/3" + params[0];
             try {
                 URL url = new URL(url_);
@@ -225,19 +240,25 @@ public class GridViewFragment extends Fragment implements AdapterView.OnItemClic
 
             } catch (MalformedURLException e) {
                 e.printStackTrace();
-                System.out.println("Exception1");
+                result = "Sorry!! error occured while loading the data";
             } catch (IOException e) {
                 e.printStackTrace();
-                System.out.println("Exception2");
+                result = "Sorry!! error occured while loading the data";
             } finally {
                 conn.disconnect();
             }
-            return "Null";
+            return result;
         }
 
         @Override
         protected void onPostExecute(String result) {
-            GridAdapter.setGridData(GridData);
+            if (progressBarWait != null)
+                progressBarWait.setVisibility(View.GONE);
+            if (result.equals(s)) {
+                Toast.makeText(getActivity(), "Sorry!! error occured while loading the data", Toast.LENGTH_SHORT).show();
+            } else {
+                GridAdapter.setGridData(GridData);
+            }
         }
 
     }
