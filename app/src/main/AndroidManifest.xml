@@ -20,7 +20,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MovieDetails_Activity"></activity>
+        <activity android:name=".MovieDetails_Activity"
+            android:parentActivityName="hnmn3.mechanic.optimist.popularmovies.MainActivity"
+            >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="hnmn3.mechanic.optimist.popularmovies.MainActivity"
+                />
+        </activity>
 
         <provider
             android:name="data.MovieContentProvider"
