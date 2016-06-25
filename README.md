@@ -23,10 +23,6 @@
 ##### used Picasso library for handling image loading and caching.
 ##### used  themoviedb.org API.
 ##### used Content Providers for data storage.
-
-![alt tag](https://github.com/Gr8manish/Images/blob/master/Moviez/one.png "Moviez")         ![alt tag](https://github.com/Gr8manish/Images/blob/master/Moviez/two.png "Moviez")
-![alt tag](https://github.com/Gr8manish/Images/blob/master/Moviez/three.png "Moviez")        ![alt tag](https://github.com/Gr8manish/Images/blob/master/Moviez/four.png "Moviez")
-![alt tag](https://github.com/Gr8manish/Images/blob/master/Moviez/five.png "Moviez")
  
 
 
