@@ -24,6 +24,10 @@
 ##### used  themoviedb.org API.
 ##### used Content Providers for data storage.
  
+ 
+![alt tag](https://github.com/Gr8manish/Moviez/blob/master/Screenshots/one.png "Moviez")         ![alt tag](https://github.com/Gr8manish/Moviez/blob/master/Screenshots/two.png "Moviez")
+![alt tag](https://github.com/Gr8manish/Moviez/blob/master/Screenshots/three.png "Moviez")        ![alt tag](https://github.com/Gr8manish/Moviez/blob/master/Screenshots/four.png "Moviez")
+![alt tag](https://github.com/Gr8manish/Moviez/blob/master/Screenshots/five.png "Moviez")
 
 
     
