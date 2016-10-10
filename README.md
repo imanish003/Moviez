@@ -1,8 +1,5 @@
 # Moviez
 
-#### Udacity Android Nanodegree Project - Moviez
-
-
 
 * Upon launch, present the user with an grid arrangement of movie posters.
 * Allow user to change sort order via a menu:
